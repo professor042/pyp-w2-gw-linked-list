@@ -20,16 +20,10 @@ class LinkedList(AbstractLinkedList):
         pass
 
     def __len__(self):
-        aux = self.start
-        count = 0
-        while aux.next != None:
-            count += 1
-            
-        return count
+        return self.count()
 
     def __iter__(self):
-        # return iter(self.list)
-        pass
+        return self
 
     def __getitem__(self, index):
         # return self.list[index]
@@ -47,8 +41,12 @@ class LinkedList(AbstractLinkedList):
 
     def __eq__(self, other):
         # If both None, return True
-        if not self.start and not other.start:
+        if self.start == None and other.start == None:
             return True
+        
+        # If only one is None, return False
+        if self.start == None or other.start == None:
+            return False
         
         # Check if unequal counts
         if self.count() != other.count():
@@ -82,15 +80,32 @@ class LinkedList(AbstractLinkedList):
     def count(self):
         # Start at 
         count = 0
-        if self.start:
-            count = 1
+        if self.start != None:
             aux = self.start
-            while aux.next != None:
+            while aux != None:
                 count += 1
                 aux = aux.next
         return count
         
 
     def pop(self, index=None):
-        #pop remo
-        return self.list.pop(index)
+        
+        if index >= self.count() or index < 0:
+            raise IndexError("index greater than self.count()")
+            
+        if self.start == None:
+            raise IndexError("LinkedList is empty")
+        
+        if index == None:
+            index = self.count()
+
+
+        # If it gets here, iterate to index
+        aux = self.start
+        for i in range(0, index):
+            aux = aux.next
+        
+        elem = aux.elem
+        aux = aux.next
+        
+        return elem
